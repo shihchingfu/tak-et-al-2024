@@ -9,39 +9,39 @@ self-contained: true
 ![<https://arxiv.org/abs/2408.16179>](images/title-author-abstract.png){width=85%}
 </center>
 
-## Astronomical Data
+## Nuances of astronomical data
 
 1. Observational rather than from designed experiments.
 
-2. Calibration to connect observations to physics.
+2. Calibration is crucial for connecting observations to physics.
 
 3. Sparsity is inevitable.
 
-4a. Objects are mixed: different life stages and time-scale of evolution.
+4. Objects are mixed: 
 
-4b. Time-scales are much larger than we can observe.
+    a. Different life-stages and time-scale of evolution.
+    b. Time-scales are much longer than we can observe.
 
-5. Measurement error is heteroscedastic
-
-
-## Summary
-
-- Check the assumptions of statistical method.
+5. Measurement error is heteroscedastic.
 
 
-## 'Models'
+## 'Models' and 'Models'
 
-- Astrophysics: a parsimonious mathematical representation of expected signal from a physical process that generates an emission detectable by instruments.
+### Astrophysics
 
-- Statistics: a stochastic representation of the data-generating process that also accounts for the discrepancy between the astrophysical model and the data.
+A parsimonious mathematical representation of the expected signal from a physical process that generates an emission detectable by instruments.
 
-## Example: photon counts
+### Statistics
 
-- Use $\mathrm{Poisson}(g(\theta))$ as a statistical model.
+A stochastic representation of the data-generating process that accounts for the discrepancy between the astrophysical model and the data.
 
-- Astrophysical model has $g(\theta)$ as a power-law.
+## Example: Photon counts
 
-- Uncertainty quantification is at the heart of statistical model.
+- $\mathrm{Poisson}(g(\theta))$ as a statistical model for photon counts.
+
+- Astrophysical model specifies $g(\theta)$ as a power-law relation.
+
+> Uncertainty quantification is at the heart of statistical models.
 
 
 ## Example: Time delay estimation
@@ -52,6 +52,8 @@ self-contained: true
 - Model misspecification can cause spurious results.
 
 - Different model fits on the same data can reveal completely different possibilities.
+
+- Don't blindly make inference on the highest mode of the posterior distribution, or smallest loss function in ML.
 :::
 
 ::: {.column width="40%"}
@@ -60,18 +62,17 @@ self-contained: true
 
 ::::
 
-## Takeaways
+## General advice
 
-- Don't blindly make inference on the highest mode of the posterior distribution!
-    - or smallest loss function in ML
-    
 - The better the statistical and astronomical data reflect the data the better quality of what the data reveal to us.
 
 - Carefully consider implicit modelling and statistical assumptions; these will affect scientific findings.
 
-> all models are wrong but some are useful (Box & Draper, 1987)
+> ...all models are wrong but some are useful.
+>
+> (Box & Draper, 1987)
 
-## Six Maxims I
+## Six Maxims
 
 1. All data have stories, but some are mistold. 
 
@@ -79,21 +80,21 @@ self-contained: true
 
 3. All prior distributions are informative, even those that are uniform. 
 
-## Six Maxims II
-
 4. All models are subject to interpretation, but some are less contrived. 
 
 5. All statistical tests have thresholds, but some are mis-set. 
 
 6. All model checks consider variations of the data, but some variants are more relevant than others.
 
-# All data have stories, but some are mistold
+# All data have stories, but some are mistold.
 
 ## Sampling Effects
 
 :::: {.columns}
 ::: {.column width="50%"}
-- Measurements of the properties of individual objects have become more accurate, but this does not translate into a more representative sample of objects.
+- Measurements of the properties of individual objects have become more accurate.
+
+- Better accuracy is not the same as a more representative sample of objects.
 :::
 
 ::: {.column width="50%"}
@@ -106,13 +107,13 @@ self-contained: true
 
 - Data is often collected for a specific purpose.
 
-- These are not randomly and uniformly selected data!
+- These are not uniformly random selection of data!
 
 - Characteristics of individual surveys can affect overall interpretation when combined together.
-  - e.g., Training ML models on convenience samples.
+  - e.g., training ML models on convenience samples can lead to biased results.
 
 
-## Others
+## Others data stories
 
 - Preprocessing can introduce statistical and systematic errors.
 
@@ -123,41 +124,50 @@ self-contained: true
 
 ## Non-Gaussianity
 
-- Outlying observations, 
-- low Poisson counts, 
-- background subtraction, 
-- error propagation, 
-- binned data, and/or 
-- heavy-tailed and asymmetric distributions.
+Be wary of:
+
+- Outlying observations
+- Low Poisson counts
+- Background subtraction
+- Error propagation
+- Binned data
+- Heavy-tailed and asymmetric distributions.
 
 ## Heteroscedasticity
 
-- 'one-sigma' measurement-error uncertainties that are heteroscedastic
+- Homoscedasticity is the assumption that errors all come from a distribution with a fixed variance.
+
+- Astronomical data often quotes 'one-sigma' measurement-error uncertainties that are heteroscedastic.
+    - Q: What is the distribution of these errors? Gaussian?
 
 ## Checking assumptions
 
-- residuals analysis.
-- sensitivity of fits to starting values.
-- check the fit in light of domain science knowledge, instead of blindly proceeding with the highest mode or other computed summary as the best model fit.
+- Residuals analysis.
+- Sensitivity of fits to starting values.
 
-## Example: 
+> Check the fit in light of domain science knowledge, instead of blindly proceeding with the highest mode or other computed summary as the best model fit.
+
+## Example: $\chi^2$ statistic
 
 - $\chi^2$ minimisation assumes Gaussian approximation of measurement errors.
 
 - Using a Gaussian approximation of Poisson count data is not valid when the variance is very different from the average count.
-    - overdispersion
+    - evidence of 'overdispersion' or 'zero-inflation'.
     
-- try fitting counts directly and use a different fit statistic.
+- Try fitting counts directly and use a different fit statistic.
 
 # All prior distributions are informative, even those that are uniform.
 
 ## Uniform priors everywhere!
 
-- interpretation of credible intervals hinges on the interpretation of the prior distribution.
+:::: {.columns}
+::: {.column width="40%"}
 
-$$\log(X) \sim \mathrm{Unif}[a,b]$$
+Interpretation of credible intervals hinges on the interpretation of the prior distribution.
 
-is not non-informative on the original scale of $X$.
+:::
+
+::: {.column width="60%"}
 
 ```{r}
 Y <- runif(1000, 1, 5)
@@ -165,11 +175,19 @@ Y <- runif(1000, 1, 5)
 hist(exp(Y), probability = TRUE)
 ```
 
+:::
+
+::::
+
+$$\log(X) \sim \mathrm{Unif}[a,b]$$
+
+is not non-informative on the original scale of $X$.
+
 ## Bounded priors
 
-- bounded uniform priors must be used with care because these completely exclude portions of the parameter space.
+- Bounded uniform priors must be used with care because these completely exclude portions of the parameter space.
 
-- set uniform bounds wide enough to not influence the likelihood.
+- Set uniform bounds wide enough to not influence the likelihood.
 
 ![](images/quotation-sec4.png)
 
@@ -179,6 +197,60 @@ hist(exp(Y), probability = TRUE)
 
 # All models are subject to interpretation, but some are less contrived. 
 
-## Physics first
+## Physics First
 
 > best to start with the physics and then consider whether the empirical findings make sense in terms of the physics and/or how we can make sense of them.
+
+# All statistical tests have thresholds, but some are mis-set. 
+
+## p-values
+
+- In frequentist statistics, the p-value is a measure of the inconsistency between the observed data and an assumed distribution under some null hypothesis.
+
+- Astronomers typically use more conservative thresholds than in biomedical research, i.e., $\alpha = 0.05$ vs $\alpha = 0.0027$.
+
+## Family-wise Error Rate (FWER)
+
+Probability of committing _at least one_ Type I Error (false-positive) among $m$ hypothesis tests:
+
+$$\mathrm{FWER} \le 1 − (1 − \alpha_\mathrm{indvidual})^m$$
+
+For 20 observations, each at 3$\sigma$:
+
+```{r}
+#| echo: true
+1 - (1 - 0.0027)^20
+```
+- Corrections are often too conservative for astronomical applications.
+
+- Consider controlling the False Discovery Rate (FDR).
+
+# All model checks consider variations of the data, but some variants are more relevant than others.
+
+## Quantifying uncertainty
+
+- Replication is a way to estimate variability and uncertainty.
+
+- But how these replicates are generated will influence the estimated uncertainties, e.g., same observational setup, different instruments, etc.
+
+- Conditional tests provide more statistical power.
+
+
+## Authors' Conclusions
+
+- There is no silver bullet technique that can be applied without considering limitations and assumptions.
+
+- Researchers encouraged to check against these six maxims to improve their data analytic practice.
+
+![](images/quotation-conc.png)
+
+## Remarks
+
+- Very general advice, applicable to other domains beyond astronomy.
+
+- Great to acknowledge the data collection biases which are not present elsewhere.
+
+- Could be more forceful with the benefits, e.g., stronger claims, fewer false conclusions.
+
+- Astronomy community needs to include discussion about sound astronomical data analyses as well substantive domain questions.
+
