@@ -1,0 +1,128 @@
+---
+format: revealjs
+self-contained: true
+---
+
+## 
+
+<center>
+![<https://arxiv.org/abs/2408.16179>](images/title-author-abstract.png){width=85%}
+</center>
+
+## Summary
+
+
+
+
+## Methodology
+
+- Use `pyaneti`
+
+## Data: Radial Velocities (RV)
+
+
+![](images/figure01.png)
+
+## Data: Bisector Inverse Slope (BIS)
+
+![](images/figure02.png)
+
+## Data
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](images/figure03.png)
+:::
+
+::: {.column width="50%"}
+![](images/figure04.png)
+:::
+
+::::
+
+## GP Model
+
+
+## Posteriors
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](images/table01.png)
+:::
+
+::: {.column width="50%"}
+
+![](images/figure05.png)
+
+:::
+
+::::
+
+## 
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+theme_set(theme_bw())
+
+n_draws <- 10000
+
+set.seed(1)
+draws <- data.frame(
+  t0_prior = rnorm(n_draws, 9095, 40),
+  t0_posterior = rnorm(n_draws, 9080.27, mean(c(21.25,20.41))),
+  Porb_prior = rnorm(n_draws, 100, 50),
+  Porb_posterior = rnorm(n_draws, 125.8, mean(c(31.5, 55.2))),
+  K_prior = runif(n_draws, -5, 5),
+  K_posterior = rnorm(n_draws, 1.25, mean(c(0.83, 0.71)))
+) |> 
+  pivot_longer(everything(), names_to = "param_dist", values_to = "draw") |> 
+  separate(param_dist, into = c("parameter", "distribution"))
+
+ggplot(draws) +
+  aes(x = draw, fill = distribution) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(vars(parameter), scales = "free") +
+  theme(legend.position = "top")
+```
+
+
+
+## Results: Keplerian companion
+
+<center>
+![](images/figure06.png){width=100%}
+</center>
+
+
+## Results: No Keplerian companion
+
+<center>
+![](images/figureB1.png){width=100%}
+</center>
+
+##
+
+<center>
+![](images/figureC1.png){width=70%}
+![](images/figureC2.png){width=70%}
+![](images/figureC3.png){width=70%}
+</center>
+
+## Results
+
+<center>
+![](images/table02.png)
+</center>
+
+
+## Conclusions
+
+
+## Comments
+

@@ -1,11 +1,184 @@
 ---
-title: "tak-et-al-2024"
+format: revealjs
+self-contained: true
 ---
 
-## Quarto
+## 
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+<center>
+![<https://arxiv.org/abs/2408.16179>](images/title-author-abstract.png){width=85%}
+</center>
+
+## Astronomical Data
+
+1. Observational rather than from designed experiments.
+
+2. Calibration to connect observations to physics.
+
+3. Sparsity is inevitable.
+
+4a. Objects are mixed: different life stages and time-scale of evolution.
+
+4b. Time-scales are much larger than we can observe.
+
+5. Measurement error is heteroscedastic
+
+
+## Summary
+
+- Check the assumptions of statistical method.
+
+
+## 'Models'
+
+- Astrophysics: a parsimonious mathematical representation of expected signal from a physical process that generates an emission detectable by instruments.
+
+- Statistics: a stochastic representation of the data-generating process that also accounts for the discrepancy between the astrophysical model and the data.
+
+## Example: photon counts
+
+- Use $\mathrm{Poisson}(g(\theta))$ as a statistical model.
+
+- Astrophysical model has $g(\theta)$ as a power-law.
+
+- Uncertainty quantification is at the heart of statistical model.
+
+
+## Example: Time delay estimation
+
+:::: {.columns}
+
+::: {.column width="50%"}
+- Model misspecification can cause spurious results.
+
+- Different model fits on the same data can reveal completely different possibilities.
+:::
+
+::: {.column width="40%"}
+![](images/figure01.png)
+:::
+
+::::
+
+## Takeaways
+
+- Don't blindly make inference on the highest mode of the posterior distribution!
+    - or smallest loss function in ML
+    
+- The better the statistical and astronomical data reflect the data the better quality of what the data reveal to us.
+
+- Carefully consider implicit modelling and statistical assumptions; these will affect scientific findings.
+
+> all models are wrong but some are useful (Box & Draper, 1987)
+
+## Six Maxims I
+
+1. All data have stories, but some are mistold. 
+
+2. All assumptions are meant to be helpful, but some can be harmful. 
+
+3. All prior distributions are informative, even those that are uniform. 
+
+## Six Maxims II
+
+4. All models are subject to interpretation, but some are less contrived. 
+
+5. All statistical tests have thresholds, but some are mis-set. 
+
+6. All model checks consider variations of the data, but some variants are more relevant than others.
+
+# All data have stories, but some are mistold
+
+## Sampling Effects
+
+:::: {.columns}
+::: {.column width="50%"}
+- Measurements of the properties of individual objects have become more accurate, but this does not translate into a more representative sample of objects.
+:::
+
+::: {.column width="50%"}
+![](images/figure02.png)
+:::
+
+::::
+
+## Selection Effects
+
+- Data is often collected for a specific purpose.
+
+- These are not randomly and uniformly selected data!
+
+- Characteristics of individual surveys can affect overall interpretation when combined together.
+  - e.g., Training ML models on convenience samples.
+
+
+## Others
+
+- Preprocessing can introduce statistical and systematic errors.
+
+- Calibration measurements are imperfect since these themselves include measurement errors and systematics.
+
+
+# All assumptions are meant to be helpful, but some can be harmful.
+
+## Non-Gaussianity
+
+- Outlying observations, 
+- low Poisson counts, 
+- background subtraction, 
+- error propagation, 
+- binned data, and/or 
+- heavy-tailed and asymmetric distributions.
+
+## Heteroscedasticity
+
+- 'one-sigma' measurement-error uncertainties that are heteroscedastic
+
+## Checking assumptions
+
+- residuals analysis.
+- sensitivity of fits to starting values.
+- check the fit in light of domain science knowledge, instead of blindly proceeding with the highest mode or other computed summary as the best model fit.
+
+## Example: 
+
+- $\chi^2$ minimisation assumes Gaussian approximation of measurement errors.
+
+- Using a Gaussian approximation of Poisson count data is not valid when the variance is very different from the average count.
+    - overdispersion
+    
+- try fitting counts directly and use a different fit statistic.
+
+# All prior distributions are informative, even those that are uniform.
+
+## Uniform priors everywhere!
+
+- interpretation of credible intervals hinges on the interpretation of the prior distribution.
+
+$$\log(X) \sim \mathrm{Unif}[a,b]$$
+
+is not non-informative on the original scale of $X$.
 
 ```{r}
-1 + 1
+Y <- runif(1000, 1, 5)
+
+hist(exp(Y), probability = TRUE)
 ```
+
+## Bounded priors
+
+- bounded uniform priors must be used with care because these completely exclude portions of the parameter space.
+
+- set uniform bounds wide enough to not influence the likelihood.
+
+![](images/quotation-sec4.png)
+
+##
+
+![](images/figure-05-06.png)
+
+# All models are subject to interpretation, but some are less contrived. 
+
+## Physics first
+
+> best to start with the physics and then consider whether the empirical findings make sense in terms of the physics and/or how we can make sense of them.
