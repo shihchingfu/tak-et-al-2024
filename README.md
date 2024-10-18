@@ -1,0 +1,1 @@
+Slides for review of Tak, Hyungsuk, Yang Chen, Vinay L. Kashyap, Kaisey S. Mandel, Xiao-Li Meng, Aneta Siemiginowska, and David A. van Dyk. 2024. “Six Maxims of Statistical Acumen for Astronomical Data Analysis.” arXiv. https://doi.org/10.48550/arXiv.2408.16179.
